@@ -1,0 +1,20 @@
+{
+  "temperature": {
+    "value": 25,
+    "status": "Normal",
+    "min": 15,
+    "max": 35
+  },
+  "water-level": {
+    "value": 50,
+    "status": "Normal",
+    "min": 10,
+    "max": 90
+  },
+  "soil-moisture": {
+    "value": 3000,
+    "status": "Normal",
+    "min": 2800,
+    "max": 3500
+  }
+}

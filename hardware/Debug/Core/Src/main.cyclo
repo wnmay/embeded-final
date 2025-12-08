@@ -1,0 +1,14 @@
+../Core/Src/main.c:87:6:microDelay	2
+../Core/Src/main.c:92:9:DHT_Start	5
+../Core/Src/main.c:134:9:DHT_Read	7
+../Core/Src/main.c:166:6:StartThermal_and_Humidity	3
+../Core/Src/main.c:221:10:ReadADC_Channel	4
+../Core/Src/main.c:254:6:map_long	3
+../Core/Src/main.c:268:5:main	5
+../Core/Src/main.c:378:6:SystemClock_Config	3
+../Core/Src/main.c:425:13:MX_ADC1_Init	3
+../Core/Src/main.c:477:13:MX_TIM1_Init	4
+../Core/Src/main.c:523:13:MX_USART1_UART_Init	2
+../Core/Src/main.c:556:13:MX_USART2_UART_Init	2
+../Core/Src/main.c:589:13:MX_GPIO_Init	1
+../Core/Src/main.c:631:6:Error_Handler	1

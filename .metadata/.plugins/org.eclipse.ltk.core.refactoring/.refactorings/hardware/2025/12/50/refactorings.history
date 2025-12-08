@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;hardware/Core/Inc/dht&apos; to &apos;dht.h&apos;" description="Rename resource &apos;dht&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/dht" name="dht.h" stamp="1765174399917" updateReferences="true"/>
+</session>

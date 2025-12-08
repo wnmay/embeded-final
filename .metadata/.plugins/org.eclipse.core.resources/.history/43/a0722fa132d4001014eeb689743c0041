@@ -1,0 +1,585 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body (DHT22 + Soil + Water)
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2025 STMicroelectronics.
+  * All rights reserved.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include <string.h>
+#include <stdio.h>
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+// กำหนดพอร์ต/ขา DHT22 (DATA ต่อที่ PA5)
+#define DHT_PORT GPIOA
+#define DHT_PIN  GPIO_PIN_5
+
+typedef struct
+{
+  float Temperature;  // องศา C
+  float Humidity;     // %
+} DHT_DataTypedef;
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+// ไม่มี define เพิ่มเติม
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc1;
+
+TIM_HandleTypeDef htim1;
+
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+
+/* USER CODE BEGIN PV */
+
+uint32_t soil_raw   = 0;
+uint32_t water_raw  = 0;
+
+uint32_t pMillis_T, cMillis_T;
+
+char msg[80];  // สำหรับส่ง UART
+
+DHT_DataTypedef DHT22_Data;
+float Temperature_f = 0.0f;
+float Humidity_f    = 0.0f;
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_ADC1_Init(void);
+static void MX_USART1_UART_Init(void);
+static void MX_TIM1_Init(void);
+
+/* USER CODE BEGIN PFP */
+static uint8_t DHT_Start(void);
+static uint8_t DHT_ReadByte(void);
+static void   DHT22_GetData(DHT_DataTypedef *data);
+uint32_t ReadADC_Channel(uint32_t channel);
+long     map_long(long x, long in_min, long in_max, long out_min, long out_max);
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+void microDelay(uint16_t delay)
+{
+  __HAL_TIM_SET_COUNTER(&htim1, 0);
+  while (__HAL_TIM_GET_COUNTER(&htim1) < delay);
+}
+
+/**
+  * @brief ส่ง start signal ไปเรียก DHT22
+  * MCU: ดึง DATA low ~1ms, แล้ว high 20-40us และปล่อยให้ sensor ตอบกลับ
+  * return 1 = sensor ตอบกลับ, 0 = ไม่ตอบ
+  */
+static uint8_t DHT_Start(void)
+{
+  uint8_t Response = 0;
+  GPIO_InitTypeDef GPIO_InitStructPrivate = {0};
+
+  // 1) ตั้งขาเป็น output แล้วดึง low อย่างน้อย 1ms
+  GPIO_InitStructPrivate.Pin   = DHT_PIN;
+  GPIO_InitStructPrivate.Mode  = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStructPrivate.Pull  = GPIO_NOPULL;
+  GPIO_InitStructPrivate.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(DHT_PORT, &GPIO_InitStructPrivate);
+
+  HAL_GPIO_WritePin(DHT_PORT, DHT_PIN, GPIO_PIN_RESET);
+  HAL_Delay(1);              // 1ms สำหรับ DHT22
+
+  // 2) ดึง high สั้น ๆ แล้วสลับเป็น input
+  HAL_GPIO_WritePin(DHT_PORT, DHT_PIN, GPIO_PIN_SET);
+  microDelay(30);            // 20-40us
+
+  // 3) ตั้งเป็น input รอ sensor ตอบกลับ
+  GPIO_InitStructPrivate.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStructPrivate.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(DHT_PORT, &GPIO_InitStructPrivate);
+
+  microDelay(40);
+
+  // DHT22 ควรดึง low ~80us แล้ว high ~80us
+  if (!HAL_GPIO_ReadPin(DHT_PORT, DHT_PIN))
+  {
+    microDelay(80);
+    if (HAL_GPIO_ReadPin(DHT_PORT, DHT_PIN))
+      Response = 1;
+  }
+
+  // รอจนกว่ามันดึงลงจบ response
+  pMillis_T = HAL_GetTick();
+  cMillis_T = HAL_GetTick();
+  while (HAL_GPIO_ReadPin(DHT_PORT, DHT_PIN) && (pMillis_T + 2 > cMillis_T))
+  {
+    cMillis_T = HAL_GetTick();
+  }
+
+  return Response;
+}
+
+/**
+  * @brief อ่าน 1 ไบต์จาก DHT22 (8 บิต)
+  */
+static uint8_t DHT_ReadByte(void)
+{
+  uint8_t a;
+  uint8_t b = 0;
+
+  for (a = 0; a < 8; a++)
+  {
+    // รอ low -> high (เริ่มบิต)
+    pMillis_T = HAL_GetTick();
+    cMillis_T = HAL_GetTick();
+    while (!HAL_GPIO_ReadPin(DHT_PORT, DHT_PIN) && (pMillis_T + 2 > cMillis_T))
+    {
+      cMillis_T = HAL_GetTick();
+    }
+
+    // delay ไปกลาง ๆ ช่วง high เพื่อตัดสิน 0/1
+    microDelay(40);
+
+    if (!HAL_GPIO_ReadPin(DHT_PORT, DHT_PIN))
+      b &= ~(1 << (7 - a));   // bit = 0
+    else
+      b |=  (1 << (7 - a));   // bit = 1
+
+    // รอ high -> low จบบิตนี้
+    pMillis_T = HAL_GetTick();
+    cMillis_T = HAL_GetTick();
+    while (HAL_GPIO_ReadPin(DHT_PORT, DHT_PIN) && (pMillis_T + 2 > cMillis_T))
+    {
+      cMillis_T = HAL_GetTick();
+    }
+  }
+  return b;
+}
+
+/**
+  * @brief อ่านข้อมูลจาก DHT22, แปลงเป็น Temperature/Humidity (float)
+  */
+static void DHT22_GetData(DHT_DataTypedef *data)
+{
+  char buffer[120];
+
+  if (!DHT_Start())
+  {
+    sprintf(buffer, "DHT22 start failed (no response)\r\n");
+    HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+    data->Temperature = -1000.0f;
+    data->Humidity    = -1.0f;
+    HAL_Delay(200);
+    return;
+  }
+
+  uint8_t RhH  = DHT_ReadByte(); // humidity high byte
+  uint8_t RhL  = DHT_ReadByte(); // humidity low byte
+  uint8_t TtH  = DHT_ReadByte(); // temp high byte
+  uint8_t TtL  = DHT_ReadByte(); // temp low byte
+  uint8_t SUM  = DHT_ReadByte(); // checksum
+
+  sprintf(buffer,
+          "RAW(DHT22) -> RhH=%u RhL=%u TtH=%u TtL=%u SUM=%u\r\n",
+          RhH, RhL, TtH, TtL, SUM);
+  HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+  uint8_t calcSum = (uint8_t)(RhH + RhL + TtH + TtL);
+
+  if (calcSum == SUM)
+  {
+    // humidity: 16-bit, 0.1%RH
+    uint16_t rawHum = ((uint16_t)RhH << 8) | RhL;
+    float hum = rawHum / 10.0f;
+
+    // temperature: 16-bit, MSB = sign, 0.1°C
+    uint16_t rawTemp = ((uint16_t)TtH << 8) | TtL;
+    float tempC;
+    if (rawTemp & 0x8000)
+    {
+      rawTemp &= 0x7FFF;
+      tempC = -(rawTemp / 10.0f);
+    }
+    else
+    {
+      tempC = rawTemp / 10.0f;
+    }
+
+    sprintf(buffer,
+            "VALID DATA -> Temp: %.1f C, Humidity: %.1f %%\r\n",
+            tempC, hum);
+    HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    data->Temperature = tempC;
+    data->Humidity    = hum;
+  }
+  else
+  {
+    sprintf(buffer,
+            "!!! CHECKSUM ERROR: sum=%u but expected %u\r\n",
+            SUM, calcSum);
+    HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    data->Temperature = -1000.0f;
+    data->Humidity    = -1.0f;
+  }
+
+  HAL_Delay(200);
+}
+
+/**
+  * @brief  Read single conversion from specified ADC channel on ADC1.
+  * @param  channel: ADC_CHANNEL_x (e.g. ADC_CHANNEL_0 for PA0).
+  * @retval 12-bit ADC value (0..4095)
+  */
+uint32_t ReadADC_Channel(uint32_t channel)
+{
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  sConfig.Channel      = channel;
+  sConfig.Rank         = 1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
+
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  if (HAL_ADC_Start(&hadc1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  if (HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  uint32_t value = HAL_ADC_GetValue(&hadc1);
+
+  HAL_ADC_Stop(&hadc1);
+
+  return value;
+}
+
+/**
+  * @brief  Arduino-style map with clamping
+  */
+long map_long(long x, long in_min, long in_max, long out_min, long out_max)
+{
+  long res = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+  if (x < in_min) return out_min;
+  if (x > in_max) return out_max;
+  return res;
+}
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+  /* MCU Configuration--------------------------------------------------------*/
+
+  HAL_Init();
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_USART2_UART_Init();
+  MX_ADC1_Init();
+  MX_USART1_UART_Init();
+  MX_TIM1_Init();
+  HAL_TIM_Base_Start(&htim1);
+
+  /* USER CODE BEGIN 2 */
+
+  const char *startMsg = "STM32 watering node (DHT22 on PA5) started\r\n";
+  HAL_UART_Transmit(&huart2, (uint8_t*)startMsg, strlen(startMsg), HAL_MAX_DELAY);
+
+  HAL_Delay(2000);
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  while (1)
+  {
+    /* อ่าน ADC ฝั่ง soil / water */
+    soil_raw  = ReadADC_Channel(ADC_CHANNEL_0);
+    water_raw = ReadADC_Channel(ADC_CHANNEL_1);
+
+    int soil_percent  = (int)map_long((long)soil_raw,  1600, 3800, 100, 0);
+    int water_percent = (int)map_long((long)water_raw, 600,  2100, 0, 100);
+
+    if (soil_percent < 0)    soil_percent  = 0;
+    if (soil_percent > 100)  soil_percent  = 100;
+    if (water_percent < 0)   water_percent = 0;
+    if (water_percent > 100) water_percent = 100;
+
+    // log ก่อนอ่าน DHT22
+    HAL_UART_Transmit(&huart2,
+                      (uint8_t*)"Before DHT22\r\n",
+                      strlen("Before DHT22\r\n"),
+                      HAL_MAX_DELAY);
+
+    DHT22_GetData(&DHT22_Data);
+
+    HAL_UART_Transmit(&huart2,
+                      (uint8_t*)"After DHT22\r\n",
+                      strlen("After DHT22\r\n"),
+                      HAL_MAX_DELAY);
+
+    Temperature_f = DHT22_Data.Temperature;
+    Humidity_f    = DHT22_Data.Humidity;
+
+    int Temperature = (int)Temperature_f;
+    int Humidity    = (int)Humidity_f;
+    int S           = soil_percent;
+    int R           = water_percent;
+
+    char debugBuf[160];
+    int dbgLen = snprintf(debugBuf, sizeof(debugBuf),
+                          "ADC: soil=%lu (%d%%), water=%lu (%d%%), "
+                          "DHT22: T=%dC H=%d%%\r\n",
+                          soil_raw, soil_percent,
+                          water_raw, water_percent,
+                          Temperature, Humidity);
+    HAL_UART_Transmit(&huart2, (uint8_t*)debugBuf, dbgLen, HAL_MAX_DELAY);
+
+    // format เดิมที่จะส่งไป ESP8266
+    int len = snprintf(msg, sizeof(msg), "T%dH%dS%dR%dE\r\n",
+                       Temperature, Humidity, S, R);
+    HAL_UART_Transmit(&huart1, (uint8_t*)msg, len, HAL_MAX_DELAY);
+    HAL_UART_Transmit(&huart2, (uint8_t*)msg, len, HAL_MAX_DELAY);
+
+    HAL_Delay(1000);   // DHT22 แนะนำอ่านห่าง >= 2s, แต่ 1s ก็พอ survive ได้
+  }
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+  RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState            = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState        = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource       = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM            = 16;
+  RCC_OscInitStruct.PLL.PLLN            = 336;
+  RCC_OscInitStruct.PLL.PLLP            = RCC_PLLP_DIV4;
+  RCC_OscInitStruct.PLL.PLLQ            = 4;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  RCC_ClkInitStruct.ClockType      = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+                                   | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief ADC1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC1_Init(void)
+{
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  hadc1.Instance                      = ADC1;
+  hadc1.Init.ClockPrescaler           = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc1.Init.Resolution               = ADC_RESOLUTION_12B;
+  hadc1.Init.ScanConvMode             = DISABLE;
+  hadc1.Init.ContinuousConvMode       = DISABLE;
+  hadc1.Init.DiscontinuousConvMode    = DISABLE;
+  hadc1.Init.ExternalTrigConvEdge     = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc1.Init.ExternalTrigConv         = ADC_SOFTWARE_START;
+  hadc1.Init.DataAlign                = ADC_DATAALIGN_RIGHT;
+  hadc1.Init.NbrOfConversion          = 1;
+  hadc1.Init.DMAContinuousRequests    = DISABLE;
+  hadc1.Init.EOCSelection             = ADC_EOC_SINGLE_CONV;
+  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  sConfig.Channel      = ADC_CHANNEL_0;
+  sConfig.Rank         = 1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief TIM1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM1_Init(void)
+{
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig     = {0};
+
+  htim1.Instance               = TIM1;
+  htim1.Init.Prescaler         = 83;  // 84MHz / (83+1) = 1MHz -> 1 tick = 1us
+  htim1.Init.CounterMode       = TIM_COUNTERMODE_UP;
+  htim1.Init.Period            = 65535;
+  htim1.Init.ClockDivision     = TIM_CLOCKDIVISION_DIV1;
+  htim1.Init.RepetitionCounter = 0;
+  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim1, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode     = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+  huart1.Instance          = USART1;
+  huart1.Init.BaudRate     = 115200;
+  huart1.Init.WordLength   = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits     = UART_STOPBITS_1;
+  huart1.Init.Parity       = UART_PARITY_NONE;
+  huart1.Init.Mode         = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl    = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+  huart2.Instance          = USART2;
+  huart2.Init.BaudRate     = 115200;
+  huart2.Init.WordLength   = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits     = UART_STOPBITS_1;
+  huart2.Init.Parity       = UART_PARITY_NONE;
+  huart2.Init.Mode         = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl    = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /* ปุ่ม B1 */
+  GPIO_InitStruct.Pin  = B1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+
+  /* ตั้งค่าเริ่มต้นให้ขา DHT22 เป็น output high (ถึงแม้ DHT_Start จะ init ใหม่อีกรอบ) */
+  GPIO_InitStruct.Pin   = DHT_PIN;
+  GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull  = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(DHT_PORT, &GPIO_InitStruct);
+  HAL_GPIO_WritePin(DHT_PORT, DHT_PIN, GPIO_PIN_SET);
+}
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  __disable_irq();
+  while (1)
+  {
+  }
+}
+
+#ifdef USE_FULL_ASSERT
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  (void)file;
+  (void)line;
+}
+#endif /* USE_FULL_ASSERT */

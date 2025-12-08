@@ -222,11 +222,6 @@ const SensorTable: React.FC<Time> = ({ lastUpdateTime, setLastUpdateTime }) => {
                 >
                   {data.status}
                 </div>
-
-                {/* <div className="mt-4 flex justify-between text-sm text-gray-500">
-                  <span>Min: {data.min}</span>
-                  <span>Max: {data.max}</span>
-                </div> */}
               </div>
             ))}
       </div>

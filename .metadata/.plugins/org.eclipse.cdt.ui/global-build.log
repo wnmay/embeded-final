@@ -2513,3 +2513,207 @@ arm-none-eabi-size  hardware.elf
   18436	     92	   2300	  20828	   515c	hardware.elf
 Finished building: default.size.stdout
  
+20:16:43 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "hardware.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\embeded-final\hardware\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="hardware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: hardware.elf
+ 
+arm-none-eabi-size  hardware.elf 
+arm-none-eabi-objdump -h -S hardware.elf  > "hardware.list"
+   text	   data	    bss	    dec	    hex	filename
+  15936	     92	   2236	  18264	   4758	hardware.elf
+Finished building: default.size.stdout
+ 
+Finished building: hardware.list
+ 
+20:17:39 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "hardware.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\embeded-final\hardware\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="hardware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: hardware.elf
+ 
+arm-none-eabi-size  hardware.elf 
+arm-none-eabi-objdump -h -S hardware.elf  > "hardware.list"
+   text	   data	    bss	    dec	    hex	filename
+  15932	     92	   2236	  18260	   4754	hardware.elf
+Finished building: default.size.stdout
+ 
+Finished building: hardware.list
+ 
+20:19:30 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:248:90: error: stray '\' in program
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                          ^
+../Core/Src/main.c:248:90: error: expected ')' before 'r'
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                          ^~
+      |                                                                                          )
+../Core/Src/main.c:247:47: note: to match this '('
+  247 |                          int dbgLen = snprintf(debugBuf, sizeof(debugBuf),
+      |                                               ^
+../Core/Src/main.c:248:92: error: stray '\' in program
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                            ^
+../Core/Src/main.c:248:94: warning: missing terminating " character
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                              ^
+../Core/Src/main.c:248:94: error: missing terminating " character
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                              ^~
+../Core/Src/main.c:248:61: warning: format '%lu' expects a matching 'long unsigned int' argument [-Wformat=]
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                           ~~^
+      |                                                             |
+      |                                                             long unsigned int
+../Core/Src/main.c:248:65: warning: format '%d' expects a matching 'int' argument [-Wformat=]
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                ~^
+      |                                                                 |
+      |                                                                 int
+../Core/Src/main.c:248:79: warning: format '%lu' expects a matching 'long unsigned int' argument [-Wformat=]
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                             ~~^
+      |                                                                               |
+      |                                                                               long unsigned int
+../Core/Src/main.c:248:83: warning: format '%d' expects a matching 'int' argument [-Wformat=]
+  248 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                  ~^
+      |                                                                                   |
+      |                                                                                   int
+make: *** [Core/Src/subdir.mk:37: Core/Src/main.o] Error 1
+"make -j22 all" terminated with exit code 2. Build might be incomplete.
+20:19:54 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:250:90: error: stray '\' in program
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                          ^
+../Core/Src/main.c:250:90: error: expected ')' before 'r'
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                          ^~
+      |                                                                                          )
+../Core/Src/main.c:249:47: note: to match this '('
+  249 |                          int dbgLen = snprintf(debugBuf, sizeof(debugBuf),
+      |                                               ^
+../Core/Src/main.c:250:92: error: stray '\' in program
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                            ^
+../Core/Src/main.c:250:94: warning: missing terminating " character
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                              ^
+../Core/Src/main.c:250:94: error: missing terminating " character
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                              ^~
+../Core/Src/main.c:250:61: warning: format '%lu' expects a matching 'long unsigned int' argument [-Wformat=]
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                           ~~^
+      |                                                             |
+      |                                                             long unsigned int
+../Core/Src/main.c:250:65: warning: format '%d' expects a matching 'int' argument [-Wformat=]
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                ~^
+      |                                                                 |
+      |                                                                 int
+../Core/Src/main.c:250:79: warning: format '%lu' expects a matching 'long unsigned int' argument [-Wformat=]
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                             ~~^
+      |                                                                               |
+      |                                                                               long unsigned int
+../Core/Src/main.c:250:83: warning: format '%d' expects a matching 'int' argument [-Wformat=]
+  250 |                                                "ADC: soil=%lu (%d%%), water=%lu (%d%%), "\r\n",
+      |                                                                                  ~^
+      |                                                                                   |
+      |                                                                                   int
+../Core/Src/main.c:247:10: warning: unused variable 'R' [-Wunused-variable]
+  247 |      int R           = water_percent;
+      |          ^
+../Core/Src/main.c:246:10: warning: unused variable 'S' [-Wunused-variable]
+  246 |      int S           = soil_percent;
+      |          ^
+make: *** [Core/Src/subdir.mk:37: Core/Src/main.o] Error 1
+"make -j22 all" terminated with exit code 2. Build might be incomplete.
+20:20:09 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:247:10: warning: unused variable 'R' [-Wunused-variable]
+  247 |      int R           = water_percent;
+      |          ^
+../Core/Src/main.c:246:10: warning: unused variable 'S' [-Wunused-variable]
+  246 |      int S           = soil_percent;
+      |          ^
+arm-none-eabi-gcc -o "hardware.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\embeded-final\hardware\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="hardware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: hardware.elf
+ 
+arm-none-eabi-size  hardware.elf 
+arm-none-eabi-objdump -h -S hardware.elf  > "hardware.list"
+   text	   data	    bss	    dec	    hex	filename
+  17304	     92	   2244	  19640	   4cb8	hardware.elf
+Finished building: default.size.stdout
+ 
+Finished building: hardware.list
+ 
+20:26:03 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:299:30: error: 'msg' undeclared (first use in this function)
+  299 |           int len = snprintf(msg, sizeof(msg), "T%d.%dH%d.%dS%dR%dE\r\n",
+      |                              ^~~
+../Core/Src/main.c:299:30: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [Core/Src/subdir.mk:37: Core/Src/main.o] Error 1
+"make -j22 all" terminated with exit code 2. Build might be incomplete.
+20:36:38 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:300:63: warning: format '%d' expects argument of type 'int', but argument 8 has type 'double' [-Wformat=]
+  300 |           int len = snprintf(msg, sizeof(msg), "T%d.%dH%d.%dS%dR%dE\r\n",
+      |                                                              ~^
+      |                                                               |
+      |                                                               int
+      |                                                              %f
+  301 |                                 tempC_integral,tempC_decimal,hum_integral, hum_decimal ,Humidity, S, R);
+      |                                                                                         ~~~~~~~~
+      |                                                                                         |
+      |                                                                                         double
+../Core/Src/main.c:300:48: warning: too many arguments for format [-Wformat-extra-args]
+  300 |           int len = snprintf(msg, sizeof(msg), "T%d.%dH%d.%dS%dR%dE\r\n",
+      |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "hardware.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\embeded-final\hardware\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="hardware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: hardware.elf
+ 
+arm-none-eabi-size  hardware.elf 
+arm-none-eabi-objdump -h -S hardware.elf  > "hardware.list"
+   text	   data	    bss	    dec	    hex	filename
+  18352	     92	   2324	  20768	   5120	hardware.elf
+Finished building: default.size.stdout
+ 
+Finished building: hardware.list
+ 
+20:38:13 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "hardware.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\embeded-final\hardware\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="hardware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: hardware.elf
+ 
+arm-none-eabi-size  hardware.elf 
+arm-none-eabi-objdump -h -S hardware.elf  > "hardware.list"
+   text	   data	    bss	    dec	    hex	filename
+  17440	     92	   2324	  19856	   4d90	hardware.elf
+Finished building: default.size.stdout
+ 
+Finished building: hardware.list
+ 
+20:39:52 **** Incremental Build of configuration Debug for project hardware ****
+make -j22 all 
+arm-none-eabi-size  hardware.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17440	     92	   2324	  19856	   4d90	hardware.elf
+Finished building: default.size.stdout
+ 

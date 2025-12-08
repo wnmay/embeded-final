@@ -1062,3 +1062,45 @@
 2025-12-08 19:05:28,460 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
 2025-12-08 19:05:28,464 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
 2025-12-08 19:09:22,787 [INFO] Gpio:278 - dependency for GPIO [ADC1, RCC, SYS, USART1, USART2]
+2025-12-08 20:06:05,936 [INFO] Gpio:278 - dependency for GPIO [ADC1, RCC, SYS, USART1, USART2]
+2025-12-08 20:06:06,082 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-08 20:07:13,237 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 874135096 Bytes (1073741824)
+2025-12-08 20:07:15,027 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 893987120 Bytes (1073741824)
+2025-12-08 20:07:17,053 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 932333112 Bytes (1073741824)
+2025-12-08 20:07:17,369 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-08 20:07:17,369 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 20:07:17,369 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-08 20:07:17,371 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2025-12-08 20:07:17,464 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\license.tmp_save
+2025-12-08 20:07:17,818 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\license.tmp
+2025-12-08 20:07:17,851 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\gpio.tmp_save
+2025-12-08 20:07:17,989 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\gpio.tmp
+2025-12-08 20:07:18,157 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c_save
+2025-12-08 20:07:18,441 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c
+2025-12-08 20:07:18,450 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h_save
+2025-12-08 20:07:18,538 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h
+2025-12-08 20:07:18,552 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c_save
+2025-12-08 20:07:18,720 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c
+2025-12-08 20:07:18,729 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\system.tmp_save
+2025-12-08 20:07:18,812 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\system.tmp
+2025-12-08 20:07:18,825 [INFO] CodeEngine:321 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h_save
+2025-12-08 20:07:18,921 [INFO] CodeEngine:345 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h
+2025-12-08 20:07:18,947 [WARN] IPConfigManager:3811 - IP not found : TIM
+2025-12-08 20:07:18,948 [WARN] CodeGenerator:4259 - IP not found : null
+2025-12-08 20:07:18,956 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\main.h_save
+2025-12-08 20:07:19,075 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\main.h
+2025-12-08 20:07:19,083 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\main.c_save
+2025-12-08 20:07:19,213 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\main.c
+2025-12-08 20:07:19,504 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 175mS.
+2025-12-08 20:07:19,507 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-08 20:07:19,566 [INFO] ConfigFileManager:1595 - The Die is : DIE431
+2025-12-08 20:07:20,551 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 1043mS.
+2025-12-08 20:07:20,552 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-08 20:07:20,557 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-08 20:34:21,865 [INFO] WebApp:194 - Connection lost
+2025-12-08 20:34:22,167 [INFO] WebApp:191 - Connection restablished

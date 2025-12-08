@@ -104,13 +104,13 @@ const SensorTable: React.FC<Time> = ({ lastUpdateTime, setLastUpdateTime }) => {
           return "Normal";
         case "water-level":
           // value is percentage (0-100)
-          if (value < 10) return "Low";
-          if (value > 90) return "High";
+          if (value < 30) return "Low";
+          if (value > 80) return "High";
           return "Normal";
         case "soil-moisture":
           // Note: for this sensor higher value = drier soil
-          if (value < 2800) return "Low";
-          if (value > 3500) return "High";
+          if (value < 10) return "Low";
+          if (value > 60) return "High";
           return "Normal";
         default:
           return "Normal";

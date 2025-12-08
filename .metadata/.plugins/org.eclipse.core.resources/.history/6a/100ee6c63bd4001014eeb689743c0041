@@ -30,6 +30,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+// ไม่มี Define เพิ่มเติม
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -204,6 +205,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  // ไม่ต้องเรียก DWT_Delay_Init ที่นี่ ถ้า DHT.c จัดการเองอยู่แล้ว
   /* USER CODE END Init */
 
   /* Configure the system clock */

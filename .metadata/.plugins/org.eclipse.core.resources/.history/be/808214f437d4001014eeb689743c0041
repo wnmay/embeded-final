@@ -24,12 +24,13 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-#define DHT22_PORT GPIOB
-#define DHT22_PIN GPIO_PIN_14
+#define DHT11_PORT GPIOA
+#define DHT11_PIN GPIO_PIN_5
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+// ไม่มี Define เพิ่มเติม
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -50,14 +51,17 @@ UART_HandleTypeDef huart2;
 uint32_t soil_raw   = 0;
 uint32_t water_raw  = 0;
 
-uint8_t hum1, hum2, tempC1, tempC2, SUM, CHECK;
-uint32_t pMillis, cMillis;
-float temp_Celsius = 0;
-float temp_Fahrenheit = 0;
-float Humidity = 0;
-uint8_t hum_integral, hum_decimal, tempC_integral, tempC_decimal, tempF_integral, tempF_decimal;
-char string[15];
-char msg[80];
+uint32_t pMillis_T, cMillis_T;
+
+uint8_t Rh_byte1, Rh_byte2, Temp_byte1, Temp_byte2;
+uint16_t SUM; uint8_t Presence = 0;
+
+char msg[80];  // สำหรับส่ง UART
+
+DHT_DataTypedef DHT11_Data;
+float Temperature_f = 0.0f;
+float Humidity_f    = 0.0f;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -76,69 +80,136 @@ long     map_long(long x, long in_min, long in_max, long out_min, long out_max);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void microDelay (uint16_t delay)
-{
-  __HAL_TIM_SET_COUNTER(&htim1, 0);
-  while (__HAL_TIM_GET_COUNTER(&htim1) < delay);
+
+void microDelay(uint16_t delay) {
+    __HAL_TIM_SET_COUNTER(&htim1, 0);
+    while (__HAL_TIM_GET_COUNTER(&htim1) < delay);
 }
 
-uint8_t DHT22_Start (void)
+uint8_t DHT_Start(void)
 {
-  uint8_t Response = 0;
-  GPIO_InitTypeDef GPIO_InitStructPrivate = {0};
-  GPIO_InitStructPrivate.Pin = DHT22_PIN;
-  GPIO_InitStructPrivate.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStructPrivate.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStructPrivate.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(DHT22_PORT, &GPIO_InitStructPrivate);
-  HAL_GPIO_WritePin (DHT22_PORT, DHT22_PIN, 0);
-  microDelay (1300);
-  HAL_GPIO_WritePin (DHT22_PORT, DHT22_PIN, 1);
-  microDelay (30);
-  GPIO_InitStructPrivate.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStructPrivate.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(DHT22_PORT, &GPIO_InitStructPrivate);
-  microDelay (40);
-  if (!(HAL_GPIO_ReadPin (DHT22_PORT, DHT22_PIN)))
-  {
-    microDelay (80);
-    if ((HAL_GPIO_ReadPin (DHT22_PORT, DHT22_PIN))) Response = 1;
-  }
-  pMillis = HAL_GetTick();
-  cMillis = HAL_GetTick();
-  while ((HAL_GPIO_ReadPin (DHT22_PORT, DHT22_PIN)) && pMillis + 2 > cMillis)
-  {
-    cMillis = HAL_GetTick();
-  }
-  return Response;
+    uint8_t Response = 0;
+    GPIO_InitTypeDef GPIO_InitStructPrivate = {0};
+
+    // 1) set pin เป็น output ดึงลง 18–20ms (ตาม datasheet) :contentReference[oaicite:0]{index=0}
+    GPIO_InitStructPrivate.Pin = DHT11_PIN;
+    GPIO_InitStructPrivate.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructPrivate.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStructPrivate.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(DHT11_PORT, &GPIO_InitStructPrivate);
+
+    HAL_GPIO_WritePin(DHT11_PORT, DHT11_PIN, GPIO_PIN_RESET);
+    HAL_Delay(20);                       // >=18ms
+
+    HAL_GPIO_WritePin(DHT11_PORT, DHT11_PIN, GPIO_PIN_SET);
+    microDelay(30);                      // 20–40us
+
+    // 2) สลับเป็น input รอ response จาก DHT
+    GPIO_InitStructPrivate.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStructPrivate.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(DHT11_PORT, &GPIO_InitStructPrivate);
+
+    microDelay(40);
+
+    // ต้องเห็น DHT ดึงลง ~80us แล้วดึงขึ้น ~80us
+    if (!HAL_GPIO_ReadPin(DHT11_PORT, DHT11_PIN)) {
+        microDelay(80);
+        if (HAL_GPIO_ReadPin(DHT11_PORT, DHT11_PIN))
+            Response = 1;
+    }
+
+    // รอจนกว่ามันดึงลงจบ response
+    pMillis_T = HAL_GetTick();
+    cMillis_T = HAL_GetTick();
+    while (HAL_GPIO_ReadPin(DHT11_PORT, DHT11_PIN) && (pMillis_T + 2 > cMillis_T)) {
+        cMillis_T = HAL_GetTick();
+    }
+
+    return Response;
 }
 
-uint8_t DHT22_Read (void)
+uint8_t DHT_Read(void)
 {
-  uint8_t x,y;
-  for (x=0;x<8;x++)
-  {
-    pMillis = HAL_GetTick();
-    cMillis = HAL_GetTick();
-    while (!(HAL_GPIO_ReadPin (DHT22_PORT, DHT22_PIN)) && pMillis + 2 > cMillis)
+    uint8_t a;
+    uint8_t b = 0;
+
+    for (a = 0; a < 8; a++)
     {
-      cMillis = HAL_GetTick();
+        // wait for line to go HIGH (เริ่มบิต)
+        pMillis_T = HAL_GetTick();
+        cMillis_T = HAL_GetTick();
+        while (!HAL_GPIO_ReadPin(DHT11_PORT, DHT11_PIN) && (pMillis_T + 2 > cMillis_T)) {
+            cMillis_T = HAL_GetTick();
+        }
+
+        microDelay(40);     // sample กลาง ๆ ช่วง high
+
+        if (!HAL_GPIO_ReadPin(DHT11_PORT, DHT11_PIN))
+            b &= ~(1 << (7 - a));    // bit = 0
+        else
+            b |=  (1 << (7 - a));    // bit = 1
+
+        // wait for line to go LOW จบบิตนี้
+        pMillis_T = HAL_GetTick();
+        cMillis_T = HAL_GetTick();
+        while (HAL_GPIO_ReadPin(DHT11_PORT, DHT11_PIN) && (pMillis_T + 2 > cMillis_T)) {
+            cMillis_T = HAL_GetTick();
+        }
     }
-    microDelay (40);
-    if (!(HAL_GPIO_ReadPin (DHT22_PORT, DHT22_PIN)))   // if the pin is low
-      y&= ~(1<<(7-x));
-    else
-      y|= (1<<(7-x));
-    pMillis = HAL_GetTick();
-    cMillis = HAL_GetTick();
-    while ((HAL_GPIO_ReadPin (DHT22_PORT, DHT22_PIN)) && pMillis + 2 > cMillis)
-    {  // wait for the pin to go low
-      cMillis = HAL_GetTick();
-    }
-  }
-  return y;
+    return b;
 }
-/* USER CODE END 0 */
+
+
+void StartThermal_and_Humidity(DHT_DataTypedef *DHT_Data)
+{
+    char buffer[120];
+
+    if (!DHT_Start()) {
+        sprintf(buffer, "DHT start failed (no response)\r\n");
+        HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+        DHT_Data->Temperature = -1;
+        DHT_Data->Humidity    = -1;
+        HAL_Delay(200);
+        return;
+    }
+
+    uint8_t RHI = DHT_Read(); // humidity int
+    uint8_t RHD = DHT_Read(); // humidity decimal (DHT11 ส่วนมากจะเป็น 0)
+    uint8_t TCI = DHT_Read(); // temp int
+    uint8_t TCD = DHT_Read(); // temp decimal
+    uint8_t SUM = DHT_Read(); // checksum
+
+    sprintf(buffer,
+            "RAW -> RHI=%u RHD=%u TCI=%u TCD=%u SUM=%u\r\n",
+            RHI, RHD, TCI, TCD, SUM);
+    HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+    if ((uint8_t)(RHI + RHD + TCI + TCD) == SUM)
+    {
+        float tempC = TCI + TCD / 10.0f;
+        float hum   = RHI + RHD / 10.0f;
+
+        sprintf(buffer, "VALID DATA -> Temp: %d C, Humidity: %d %%\r\n",
+                tempC, hum);
+        HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+        DHT_Data->Temperature = tempC;
+        DHT_Data->Humidity    = hum;
+    }
+    else
+    {
+        sprintf(buffer,
+                "!!! CHECKSUM ERROR: sum=%u but expected %u\r\n",
+                SUM, (uint8_t)(RHI + RHD + TCI + TCD));
+        HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+        DHT_Data->Temperature = -1;
+        DHT_Data->Humidity    = -1;
+    }
+
+    HAL_Delay(200);
+}
+
 /**
   * @brief  Read single conversion from specified ADC channel on ADC1.
   * @param  channel: ADC_CHANNEL_x (e.g. ADC_CHANNEL_0 for PA0).
@@ -204,6 +275,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  // ไม่ต้องเรียก DWT_Delay_Init ที่นี่ ถ้า DHT.c จัดการเองอยู่แล้ว
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -220,7 +292,11 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start(&htim1);
+
+  const char *startMsg = "STM32 watering node (DHT11 on PA5) started\r\n";
+  HAL_UART_Transmit(&huart2, (uint8_t*)startMsg, strlen(startMsg), HAL_MAX_DELAY);
+
+  HAL_Delay(2000);
 
   /* USER CODE END 2 */
 
@@ -228,77 +304,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+//	  DHT_Start();
+//	  uint8_t test=HAL_GPIO_ReadPin (DHT11_PORT, DHT11_PIN);
+//	  if(test){
+//		  HAL_UART_Transmit(&huart2,
+//		  	             (uint8_t*)"1\r\n", strlen("1\r\n"), HAL_MAX_DELAY);
+//	  }else{
+//		  HAL_UART_Transmit(&huart2,
+//		  		  	             (uint8_t*)"0\r\n", strlen("0\r\n"), HAL_MAX_DELAY);
+//	  }
+//	  continue;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	  soil_raw  = ReadADC_Channel(ADC_CHANNEL_0);
-	 water_raw = ReadADC_Channel(ADC_CHANNEL_1);
-
-	 int soil_percent  = (int)map_long((long)soil_raw,  1600, 3800, 100, 0);
-	 int water_percent = (int)map_long((long)water_raw, 600,  2100, 0, 100);
-
-	 if (soil_percent < 0)   soil_percent = 0;
-	 if (soil_percent > 100) soil_percent = 100;
-	 if (water_percent < 0)   water_percent = 0;
-	 if (water_percent > 100) water_percent = 100;
-     int S           = soil_percent;
-     int R           = water_percent;
-	 char debugBuf[120];
-		         int dbgLen = snprintf(debugBuf, sizeof(debugBuf),
-		                               "ADC: soil=%lu (%d%%), water=%lu (%d%%)\r\n",
-		                               soil_raw, soil_percent,
-		                               water_raw, water_percent);
-	HAL_UART_Transmit(&huart2, (uint8_t*)debugBuf, dbgLen, HAL_MAX_DELAY);
-
-
-	  if(DHT22_Start())
-	  	 {
-	  	   hum1 = DHT22_Read();
-	  	   hum2 = DHT22_Read();
-	  	   tempC1 = DHT22_Read();
-	  	   tempC2 = DHT22_Read();
-	  	   SUM = DHT22_Read();
-	  	   CHECK = hum1 + hum2 + tempC1 + tempC2;
-	  	   if (CHECK == SUM)
-	  	   {
-	  		 if (tempC1>127)
-	  		 {
-	  		   temp_Celsius = (float)tempC2/10*(-1);
-	  		 }
-	  		 else
-	  		 {
-	  		   temp_Celsius = (float)((tempC1<<8)|tempC2)/10;
-	  		 }
-
-	  		 Humidity = (float) ((hum1<<8)|hum2)/10;
-
-	  		 hum_integral = Humidity;
-	  		 hum_decimal = Humidity*10-hum_integral*10;
-	  		 sprintf(string,"%d.%d %% ", hum_integral, hum_decimal);
-	  		 HAL_UART_Transmit(&huart2, (uint8_t*)("Humidity :"), 10, HAL_MAX_DELAY);
-	  		 HAL_UART_Transmit(&huart2, (uint8_t*)string, strlen(string), HAL_MAX_DELAY);
-
-	  		 if (temp_Celsius < 0)
-	  		 {
-	  		   tempC_integral = temp_Celsius *(-1);
-	  		   tempC_decimal = temp_Celsius*(-10)-tempC_integral*10;
-	  		   sprintf(string,"-%d.%d C   ", tempC_integral, tempC_decimal);
-	  		 }
-	  		 else
-	  		 {
-	  		   tempC_integral = temp_Celsius;
-	  		   tempC_decimal = temp_Celsius*10-tempC_integral*10;
-	  		   sprintf(string,"%d.%d C   ", tempC_integral, tempC_decimal);
-	  		 }
-	  		 HAL_UART_Transmit(&huart2, (uint8_t*)("Temperature :"), 13, HAL_MAX_DELAY);
-	  		 HAL_UART_Transmit(&huart2, (uint8_t*)string, strlen(string), HAL_MAX_DELAY);
-	  	   }
-	  	 }
-	  int len = snprintf(msg, sizeof(msg), "T%d.%dH%d.%dS%dR%dE\r\n",tempC_integral,tempC_decimal,hum_integral, hum_decimal, S, R);
-	     HAL_UART_Transmit(&huart1, (uint8_t*)msg, len, HAL_MAX_DELAY);
-         HAL_UART_Transmit(&huart2, (uint8_t*)msg, len, HAL_MAX_DELAY);
-	  	 HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }

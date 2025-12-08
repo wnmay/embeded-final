@@ -817,3 +817,290 @@
 2025-12-08 15:05:15,998 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 975mS.
 2025-12-08 15:05:15,999 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
 2025-12-08 15:05:16,002 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-08 15:46:18,287 [INFO] Gpio:278 - dependency for GPIO [ADC1, RCC, SYS, USART1, USART2]
+2025-12-08 15:46:26,508 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,450x184,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-08 15:48:15,211 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 725810680 Bytes (1073741824)
+2025-12-08 15:48:17,056 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 754122232 Bytes (1073741824)
+2025-12-08 15:48:18,804 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 791344632 Bytes (1073741824)
+2025-12-08 15:48:19,404 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-08 15:48:19,404 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 15:48:19,404 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 15:48:19,405 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-08 15:48:19,405 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-08 15:48:19,406 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-08 15:48:19,406 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-08 15:48:19,408 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2025-12-08 15:48:19,669 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\license.tmp_save
+2025-12-08 15:48:19,915 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\license.tmp
+2025-12-08 15:48:19,940 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\gpio.tmp_save
+2025-12-08 15:48:20,089 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\gpio.tmp
+2025-12-08 15:48:20,196 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c_save
+2025-12-08 15:48:20,494 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c
+2025-12-08 15:48:20,505 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h_save
+2025-12-08 15:48:20,586 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h
+2025-12-08 15:48:20,601 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c_save
+2025-12-08 15:48:20,719 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c
+2025-12-08 15:48:20,725 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\system.tmp_save
+2025-12-08 15:48:20,786 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\system.tmp
+2025-12-08 15:48:20,799 [INFO] CodeEngine:321 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h_save
+2025-12-08 15:48:20,868 [INFO] CodeEngine:345 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h
+2025-12-08 15:48:20,896 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\main.h_save
+2025-12-08 15:48:20,975 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\main.h
+2025-12-08 15:48:20,982 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\main.c_save
+2025-12-08 15:48:21,108 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\main.c
+2025-12-08 15:48:21,467 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 195mS.
+2025-12-08 15:48:21,471 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-08 15:48:21,542 [INFO] ConfigFileManager:1595 - The Die is : DIE431
+2025-12-08 15:48:22,552 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 1080mS.
+2025-12-08 15:48:22,552 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-08 15:48:22,554 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-08 15:49:25,878 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 885139616 Bytes (1073741824)
+2025-12-08 15:49:27,192 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 904413280 Bytes (1073741824)
+2025-12-08 15:49:28,434 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 964831392 Bytes (1073741824)
+2025-12-08 15:49:28,745 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-08 15:49:28,745 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 15:49:28,745 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 15:49:28,745 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-08 15:49:28,745 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-08 15:49:28,745 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-08 15:49:28,745 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-08 15:49:28,747 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2025-12-08 15:49:28,790 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\license.tmp_save
+2025-12-08 15:49:28,981 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\license.tmp
+2025-12-08 15:49:29,006 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\gpio.tmp_save
+2025-12-08 15:49:29,119 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\gpio.tmp
+2025-12-08 15:49:29,211 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c_save
+2025-12-08 15:49:29,323 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c
+2025-12-08 15:49:29,330 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h_save
+2025-12-08 15:49:29,413 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h
+2025-12-08 15:49:29,423 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c_save
+2025-12-08 15:49:29,534 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c
+2025-12-08 15:49:29,538 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\system.tmp_save
+2025-12-08 15:49:29,594 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\system.tmp
+2025-12-08 15:49:29,605 [INFO] CodeEngine:321 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h_save
+2025-12-08 15:49:29,673 [INFO] CodeEngine:345 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h
+2025-12-08 15:49:29,701 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\main.h_save
+2025-12-08 15:49:29,760 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\main.h
+2025-12-08 15:49:29,765 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\main.c_save
+2025-12-08 15:49:29,857 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\main.c
+2025-12-08 15:49:30,170 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 188mS.
+2025-12-08 15:49:30,174 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-08 15:49:30,261 [INFO] ConfigFileManager:1595 - The Die is : DIE431
+2025-12-08 15:49:31,072 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 898mS.
+2025-12-08 15:49:31,073 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-08 15:49:31,076 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-08 16:34:48,946 [INFO] WebApp:194 - Connection lost
+2025-12-08 16:34:49,190 [INFO] WebApp:191 - Connection restablished
+2025-12-08 16:56:48,033 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-08 16:57:05,708 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] Exception in thread "AWT-EventQueue-0" java.awt.IllegalComponentStateException: component must be showing on the screen to determine its location
+2025-12-08 16:57:05,711 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.getLocationOnScreen_NoTreeLock(Component.java:2113)
+2025-12-08 16:57:05,713 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.getLocationOnScreen(Component.java:2087)
+2025-12-08 16:57:05,714 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.JPopupMenu.show(JPopupMenu.java:982)
+2025-12-08 16:57:05,715 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.plaf.basic.BasicComboPopup.show(BasicComboPopup.java:235)
+2025-12-08 16:57:05,716 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.plaf.basic.BasicComboPopup.togglePopup(BasicComboPopup.java:1265)
+2025-12-08 16:57:05,717 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.plaf.basic.BasicComboPopup$Handler.mousePressed(BasicComboPopup.java:936)
+2025-12-08 16:57:05,717 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6618)
+2025-12-08 16:57:05,718 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3398)
+2025-12-08 16:57:05,719 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.processEvent(Component.java:6386)
+2025-12-08 16:57:05,720 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+2025-12-08 16:57:05,722 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:4996)
+2025-12-08 16:57:05,738 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+2025-12-08 16:57:05,739 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4828)
+2025-12-08 16:57:05,740 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.plaf.basic.BasicTableUI$Handler.repostEvent(BasicTableUI.java:978)
+2025-12-08 16:57:05,741 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.plaf.basic.BasicTableUI$Handler.adjustSelection(BasicTableUI.java:1140)
+2025-12-08 16:57:05,741 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.plaf.basic.BasicTableUI$Handler.mousePressed(BasicTableUI.java:1068)
+2025-12-08 16:57:05,742 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:288)
+2025-12-08 16:57:05,743 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:287)
+2025-12-08 16:57:05,744 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:287)
+2025-12-08 16:57:05,744 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:287)
+2025-12-08 16:57:05,745 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6618)
+2025-12-08 16:57:05,745 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3398)
+2025-12-08 16:57:05,746 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.processEvent(Component.java:6386)
+2025-12-08 16:57:05,746 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+2025-12-08 16:57:05,747 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:4996)
+2025-12-08 16:57:05,747 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+2025-12-08 16:57:05,748 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4828)
+2025-12-08 16:57:05,748 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+2025-12-08 16:57:05,749 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4572)
+2025-12-08 16:57:05,749 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+2025-12-08 16:57:05,750 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+2025-12-08 16:57:05,750 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4828)
+2025-12-08 16:57:05,751 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:775)
+2025-12-08 16:57:05,752 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:720)
+2025-12-08 16:57:05,752 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:714)
+2025-12-08 16:57:05,753 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+2025-12-08 16:57:05,754 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+2025-12-08 16:57:05,756 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:98)
+2025-12-08 16:57:05,757 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:747)
+2025-12-08 16:57:05,757 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:745)
+2025-12-08 16:57:05,758 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+2025-12-08 16:57:05,759 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+2025-12-08 16:57:05,759 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:744)
+2025-12-08 16:57:05,760 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+2025-12-08 16:57:05,761 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+2025-12-08 16:57:05,761 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+2025-12-08 16:57:05,762 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+2025-12-08 16:57:05,763 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+2025-12-08 16:57:05,764 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+2025-12-08 16:58:08,267 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 935932744 Bytes (1073741824)
+2025-12-08 16:58:10,152 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 958475080 Bytes (1073741824)
+2025-12-08 16:58:11,996 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 665087640 Bytes (1073741824)
+2025-12-08 16:58:12,253 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-08 16:58:12,254 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 16:58:12,254 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 16:58:12,254 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8
+2025-12-08 16:58:12,254 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-08 16:58:12,254 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-08 16:58:12,254 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-08 16:58:12,254 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-08 16:58:12,256 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2025-12-08 16:58:12,317 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\license.tmp_save
+2025-12-08 16:58:12,678 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\license.tmp
+2025-12-08 16:58:12,705 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\gpio.tmp_save
+2025-12-08 16:58:12,863 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\gpio.tmp
+2025-12-08 16:58:13,063 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c_save
+2025-12-08 16:58:13,249 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c
+2025-12-08 16:58:13,254 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h_save
+2025-12-08 16:58:13,359 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h
+2025-12-08 16:58:13,377 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c_save
+2025-12-08 16:58:13,526 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c
+2025-12-08 16:58:13,532 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\system.tmp_save
+2025-12-08 16:58:13,602 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\system.tmp
+2025-12-08 16:58:13,613 [INFO] CodeEngine:321 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h_save
+2025-12-08 16:58:13,681 [INFO] CodeEngine:345 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h
+2025-12-08 16:58:13,707 [INFO] ApiDbMcu:532 - Load IP Config File for TIM1
+2025-12-08 16:58:13,708 [WARN] IPConfigManager:3811 - IP not found : TIM
+2025-12-08 16:58:13,709 [WARN] CodeGenerator:4259 - IP not found : null
+2025-12-08 16:58:13,717 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\main.h_save
+2025-12-08 16:58:13,794 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\main.h
+2025-12-08 16:58:13,801 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\main.c_save
+2025-12-08 16:58:13,895 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\main.c
+2025-12-08 16:58:14,567 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 284mS.
+2025-12-08 16:58:14,570 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-08 16:58:14,629 [INFO] ConfigFileManager:1595 - The Die is : DIE431
+2025-12-08 16:58:15,243 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 673mS.
+2025-12-08 16:58:15,244 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-08 16:58:15,252 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-08 17:56:15,143 [INFO] WebApp:194 - Connection lost
+2025-12-08 17:56:22,846 [INFO] WebApp:191 - Connection restablished
+2025-12-08 17:56:25,478 [INFO] WebApp:194 - Connection lost
+2025-12-08 17:56:25,661 [INFO] WebApp:191 - Connection restablished
+2025-12-08 19:03:54,034 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 1002295704 Bytes (1073741824)
+2025-12-08 19:03:55,488 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 673721248 Bytes (1073741824)
+2025-12-08 19:03:57,982 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 742985040 Bytes (1073741824)
+2025-12-08 19:03:58,373 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-08 19:03:58,373 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 19:03:58,373 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 19:03:58,373 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8
+2025-12-08 19:03:58,374 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-08 19:03:58,374 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-08 19:03:58,374 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-08 19:03:58,375 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-08 19:03:58,377 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2025-12-08 19:03:58,458 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\license.tmp_save
+2025-12-08 19:03:58,746 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\license.tmp
+2025-12-08 19:03:58,775 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\gpio.tmp_save
+2025-12-08 19:03:58,934 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\gpio.tmp
+2025-12-08 19:03:59,113 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c_save
+2025-12-08 19:03:59,321 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c
+2025-12-08 19:03:59,334 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h_save
+2025-12-08 19:03:59,428 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h
+2025-12-08 19:03:59,441 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c_save
+2025-12-08 19:03:59,561 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c
+2025-12-08 19:03:59,567 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\system.tmp_save
+2025-12-08 19:03:59,628 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\system.tmp
+2025-12-08 19:03:59,641 [INFO] CodeEngine:321 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h_save
+2025-12-08 19:03:59,703 [INFO] CodeEngine:345 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h
+2025-12-08 19:03:59,720 [WARN] IPConfigManager:3811 - IP not found : TIM
+2025-12-08 19:03:59,723 [WARN] CodeGenerator:4259 - IP not found : null
+2025-12-08 19:03:59,731 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\main.h_save
+2025-12-08 19:03:59,802 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\main.h
+2025-12-08 19:03:59,807 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\main.c_save
+2025-12-08 19:03:59,907 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\main.c
+2025-12-08 19:04:00,193 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 171mS.
+2025-12-08 19:04:00,196 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-08 19:04:00,253 [INFO] ConfigFileManager:1595 - The Die is : DIE431
+2025-12-08 19:04:00,819 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 623mS.
+2025-12-08 19:04:00,821 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-08 19:04:00,875 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-08 19:05:20,116 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 896675312 Bytes (1073741824)
+2025-12-08 19:05:21,858 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 923938288 Bytes (1073741824)
+2025-12-08 19:05:25,067 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 963261936 Bytes (1073741824)
+2025-12-08 19:05:25,779 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-08 19:05:25,780 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 19:05:25,780 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 19:05:25,780 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8
+2025-12-08 19:05:25,780 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-08 19:05:25,781 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-08 19:05:25,781 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-08 19:05:25,781 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-08 19:05:25,782 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2025-12-08 19:05:26,033 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\license.tmp_save
+2025-12-08 19:05:26,217 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\license.tmp
+2025-12-08 19:05:26,238 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\gpio.tmp_save
+2025-12-08 19:05:26,355 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\gpio.tmp
+2025-12-08 19:05:26,524 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c_save
+2025-12-08 19:05:26,609 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c
+2025-12-08 19:05:26,615 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h_save
+2025-12-08 19:05:26,683 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h
+2025-12-08 19:05:26,693 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c_save
+2025-12-08 19:05:26,806 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c
+2025-12-08 19:05:26,810 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\system.tmp_save
+2025-12-08 19:05:26,866 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\system.tmp
+2025-12-08 19:05:26,874 [INFO] CodeEngine:321 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h_save
+2025-12-08 19:05:26,938 [INFO] CodeEngine:345 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h
+2025-12-08 19:05:26,958 [WARN] IPConfigManager:3811 - IP not found : TIM
+2025-12-08 19:05:26,959 [WARN] CodeGenerator:4259 - IP not found : null
+2025-12-08 19:05:26,967 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\main.h_save
+2025-12-08 19:05:27,025 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\main.h
+2025-12-08 19:05:27,030 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\main.c_save
+2025-12-08 19:05:27,147 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\main.c
+2025-12-08 19:05:27,485 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 191mS.
+2025-12-08 19:05:27,491 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-08 19:05:27,575 [INFO] ConfigFileManager:1595 - The Die is : DIE431
+2025-12-08 19:05:28,459 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 968mS.
+2025-12-08 19:05:28,460 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-08 19:05:28,464 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-08 19:09:22,787 [INFO] Gpio:278 - dependency for GPIO [ADC1, RCC, SYS, USART1, USART2]
+2025-12-08 20:06:05,936 [INFO] Gpio:278 - dependency for GPIO [ADC1, RCC, SYS, USART1, USART2]
+2025-12-08 20:06:06,082 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-08 20:07:13,237 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 874135096 Bytes (1073741824)
+2025-12-08 20:07:15,027 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 893987120 Bytes (1073741824)
+2025-12-08 20:07:17,053 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 932333112 Bytes (1073741824)
+2025-12-08 20:07:17,369 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-08 20:07:17,369 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 20:07:17,369 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-08 20:07:17,370 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-08 20:07:17,371 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2025-12-08 20:07:17,464 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\license.tmp_save
+2025-12-08 20:07:17,818 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\license.tmp
+2025-12-08 20:07:17,851 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\gpio.tmp_save
+2025-12-08 20:07:17,989 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\gpio.tmp
+2025-12-08 20:07:18,157 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c_save
+2025-12-08 20:07:18,441 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_it.c
+2025-12-08 20:07:18,450 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h_save
+2025-12-08 20:07:18,538 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_it.h
+2025-12-08 20:07:18,552 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c_save
+2025-12-08 20:07:18,720 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\stm32f4xx_hal_msp.c
+2025-12-08 20:07:18,729 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\MXTmpFiles\system.tmp_save
+2025-12-08 20:07:18,812 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\MXTmpFiles\system.tmp
+2025-12-08 20:07:18,825 [INFO] CodeEngine:321 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h_save
+2025-12-08 20:07:18,921 [INFO] CodeEngine:345 - Generated code: C:\embeded-final\hardware\Core\Inc\stm32f4xx_hal_conf.h
+2025-12-08 20:07:18,947 [WARN] IPConfigManager:3811 - IP not found : TIM
+2025-12-08 20:07:18,948 [WARN] CodeGenerator:4259 - IP not found : null
+2025-12-08 20:07:18,956 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Inc\main.h_save
+2025-12-08 20:07:19,075 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Inc\main.h
+2025-12-08 20:07:19,083 [INFO] CodeEngine:265 - oldGeneratedFile, C:\embeded-final\hardware\Core\Src\main.c_save
+2025-12-08 20:07:19,213 [INFO] CodeEngine:289 - Generated code: C:\embeded-final\hardware\Core\Src\main.c
+2025-12-08 20:07:19,504 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 175mS.
+2025-12-08 20:07:19,507 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-08 20:07:19,566 [INFO] ConfigFileManager:1595 - The Die is : DIE431
+2025-12-08 20:07:20,551 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 1043mS.
+2025-12-08 20:07:20,552 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-08 20:07:20,557 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-08 20:34:21,865 [INFO] WebApp:194 - Connection lost
+2025-12-08 20:34:22,167 [INFO] WebApp:191 - Connection restablished

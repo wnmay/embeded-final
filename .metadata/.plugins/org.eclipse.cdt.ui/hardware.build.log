@@ -1,10 +1,10 @@
-15:27:35 **** Incremental Build of configuration Debug for project hardware ****
+19:44:54 **** Incremental Build of configuration Debug for project hardware ****
 make -j22 all 
 arm-none-eabi-size  hardware.elf 
    text	   data	    bss	    dec	    hex	filename
-  15268	     92	   2228	  17588	   44b4	hardware.elf
+  18436	     92	   2300	  20828	   515c	hardware.elf
 Finished building: default.size.stdout
  
 
-15:27:35 Build Finished. 0 errors, 0 warnings. (took 197ms)
+19:44:55 Build Finished. 0 errors, 0 warnings. (took 228ms)
 

@@ -2,16 +2,12 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : Main program body
+  * @brief          : Main program body (DHT11 + Soil + Water)
   ******************************************************************************
   * @attention
   *
   * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -23,6 +19,7 @@
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
+#include "DHT.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,8 +29,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define DS18B20_PORT GPIOA
-#define DS18B20_PIN  GPIO_PIN_4
+// ไม่มี Define เพิ่มเติม
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,9 +47,12 @@ UART_HandleTypeDef huart2;
 
 uint32_t soil_raw   = 0;
 uint32_t water_raw  = 0;
-uint32_t temp_raw   = 0;
 
 char msg[80];  // สำหรับส่ง UART
+
+DHT_DataTypedef DHT11_Data;
+float Temperature_f = 0.0f;
+float Humidity_f    = 0.0f;
 
 /* USER CODE END PV */
 
@@ -66,157 +65,12 @@ static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 uint32_t ReadADC_Channel(uint32_t channel);
-long map_long(long x, long in_min, long in_max, long out_min, long out_max);
+long     map_long(long x, long in_min, long in_max, long out_min, long out_max);
 
-uint32_t ReadADC_Channel(uint32_t channel);
-long map_long(long x, long in_min, long in_max, long out_min, long out_max);
-
-float DS18B20_ReadTemperature(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-// simple µs delay using DWT cycle counter (ต้องเปิดใช้ใน main ก่อน)
-static void DWT_Delay_Init(void)
-{
-  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-}
-
-static void delay_us(uint32_t us)
-{
-  uint32_t cycles = (SystemCoreClock / 1000000L) * us;
-  uint32_t start = DWT->CYCCNT;
-  while ((DWT->CYCCNT - start) < cycles);
-}
-
-static void DS18B20_LineLow(void)
-{
-  HAL_GPIO_WritePin(DS18B20_PORT, DS18B20_PIN, GPIO_PIN_RESET);
-}
-
-static void DS18B20_LineRelease(void)
-{
-  HAL_GPIO_WritePin(DS18B20_PORT, DS18B20_PIN, GPIO_PIN_SET);
-}
-
-static GPIO_PinState DS18B20_ReadLine(void)
-{
-  return HAL_GPIO_ReadPin(DS18B20_PORT, DS18B20_PIN);
-}
-
-// Reset pulse + presence detect
-static uint8_t DS18B20_Reset(void)
-{
-  uint8_t presence = 0;
-
-  DS18B20_LineLow();
-  delay_us(480);          // reset low
-  DS18B20_LineRelease();
-  delay_us(70);           // wait for presence
-
-  if (DS18B20_ReadLine() == GPIO_PIN_RESET)
-    presence = 1;         // sensor pulled low = present
-
-  delay_us(410);          // wait end of timeslot
-
-  return presence;
-}
-
-static void DS18B20_WriteBit(uint8_t bit)
-{
-  DS18B20_LineLow();
-  if (bit)
-  {
-    delay_us(6);          // write '1': keep low short
-    DS18B20_LineRelease();
-    delay_us(64);
-  }
-  else
-  {
-    delay_us(60);         // write '0': keep low longer
-    DS18B20_LineRelease();
-    delay_us(10);
-  }
-}
-
-static uint8_t DS18B20_ReadBit(void)
-{
-  uint8_t bit = 0;
-
-  DS18B20_LineLow();
-  delay_us(3);
-  DS18B20_LineRelease();
-  delay_us(10);           // wait before sample
-  bit = (DS18B20_ReadLine() == GPIO_PIN_SET) ? 1 : 0;
-  delay_us(50);           // rest of timeslot
-
-  return bit;
-}
-
-static void DS18B20_WriteByte(uint8_t data)
-{
-  for (int i = 0; i < 8; i++)
-  {
-    DS18B20_WriteBit(data & 0x01);
-    data >>= 1;
-  }
-}
-
-static uint8_t DS18B20_ReadByte(void)
-{
-  uint8_t data = 0;
-  for (int i = 0; i < 8; i++)
-  {
-    data >>= 1;
-    if (DS18B20_ReadBit())
-    {
-      data |= 0x80;
-    }
-  }
-  return data;
-}
-
-// อ่านอุณหภูมิ (Skip ROM, assume sensor เดียวบน bus)
-float DS18B20_ReadTemperature(void)
-{
-  uint8_t scratchpad[9];
-
-  if (!DS18B20_Reset())
-  {
-    // no sensor
-    return -1000.0f;
-  }
-
-  // Skip ROM
-  DS18B20_WriteByte(0xCC);
-  // Convert T
-  DS18B20_WriteByte(0x44);
-
-  // รอให้แปลงเสร็จ (12-bit สูงสุด ~750ms)
-  HAL_Delay(750);
-
-  if (!DS18B20_Reset())
-  {
-    return -1000.0f;
-  }
-
-  // Skip ROM
-  DS18B20_WriteByte(0xCC);
-  // Read Scratchpad
-  DS18B20_WriteByte(0xBE);
-
-  for (int i = 0; i < 9; i++)
-  {
-    scratchpad[i] = DS18B20_ReadByte();
-  }
-
-  int16_t raw = (scratchpad[1] << 8) | scratchpad[0];
-  float tempC = raw * 0.0625f;   // 1 LSB = 0.0625 °C (12-bit)
-
-  return tempC;
-}
 
 /**
   * @brief  Read single conversion from specified ADC channel on ADC1.
@@ -228,7 +82,7 @@ uint32_t ReadADC_Channel(uint32_t channel)
   ADC_ChannelConfTypeDef sConfig = {0};
 
   sConfig.Channel      = channel;
-  sConfig.Rank         = 1;  // regular rank 1 (F4)
+  sConfig.Rank         = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
 
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
@@ -254,7 +108,7 @@ uint32_t ReadADC_Channel(uint32_t channel)
 }
 
 /**
-  * @brief  Arduino-style map with clamping (เหมือนโค้ดใน repo เดิม)
+  * @brief  Arduino-style map with clamping
   */
 long map_long(long x, long in_min, long in_max, long out_min, long out_max)
 {
@@ -272,7 +126,6 @@ long map_long(long x, long in_min, long in_max, long out_min, long out_max)
   */
 int main(void)
 {
-
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -283,7 +136,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  DWT_Delay_Init();
+  // ไม่ต้องเรียก DWT_Delay_Init ที่นี่ ถ้า DHT.c จัดการเองอยู่แล้ว
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -297,10 +150,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_ADC1_Init();
-  MX_USART1_UART_Init();
+  MX_USART1_UART_Init();\
+  DWT_Delay_Init();
   /* USER CODE BEGIN 2 */
 
-  const char *startMsg = "STM32 watering node (no DHT) started\r\n";
+  const char *startMsg = "STM32 watering node (DHT11 on PA5) started\r\n";
   HAL_UART_Transmit(&huart2, (uint8_t*)startMsg, strlen(startMsg), HAL_MAX_DELAY);
 
   /* USER CODE END 2 */
@@ -309,56 +163,53 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
+      soil_raw  = ReadADC_Channel(ADC_CHANNEL_0);
+      water_raw = ReadADC_Channel(ADC_CHANNEL_1);
 
-    /* USER CODE BEGIN 3 */
+      int soil_percent  = (int)map_long((long)soil_raw,  1600, 3800, 100, 0);
+      int water_percent = (int)map_long((long)water_raw, 600,  2100, 0, 100);
 
-    soil_raw  = ReadADC_Channel(ADC_CHANNEL_0); // PA0 - soil
-    water_raw = ReadADC_Channel(ADC_CHANNEL_1); // PA1 - water level
-//    temp_raw  = ReadADC_Channel(ADC_CHANNEL_4); // PA4 - temperature sensor
+      if (soil_percent < 0)   soil_percent = 0;
+      if (soil_percent > 100) soil_percent = 100;
+      if (water_percent < 0)   water_percent = 0;
+      if (water_percent > 100) water_percent = 100;
 
+      // 1) log ก่อนอ่าน DHT
+      HAL_UART_Transmit(&huart2,
+          (uint8_t*)"Before DHT\r\n", strlen("Before DHT\r\n"), HAL_MAX_DELAY);
 
-    int soil_percent  = (int)map_long((long)soil_raw,  1600,3800,100,0);
-    int water_percent = (int)map_long((long)water_raw, 600, 2100, 0, 100);
-    if (soil_percent < 0)   soil_percent = 0;
-    if (soil_percent > 100) soil_percent = 100;
+      DHT_GetData(&DHT11_Data);
 
-    float tempC = DS18B20_ReadTemperature();
-    int Temperature = (int)(tempC + 0.5f);
-    int Humidity    = 0;
-    int S           = soil_percent;
-    int R           = water_percent;
+      // 2) log หลังอ่าน DHT (ถ้าไม่เห็นบรรทัดนี้ = ติดใน DHT_GetData)
+      HAL_UART_Transmit(&huart2,
+          (uint8_t*)"After DHT\r\n", strlen("After DHT\r\n"), HAL_MAX_DELAY);
 
-    char debugBuf[80];
-    int dbgLen = snprintf(debugBuf, sizeof(debugBuf),
-                          "ADC: soil=%lu (%d%%), water=%lu (%d%%), temp=%lu\r\n",
-                          soil_raw, soil_percent, water_raw, water_percent, Temperature);
+      Temperature_f = DHT11_Data.Temperature;
+      Humidity_f    = DHT11_Data.Humidity;
 
+      int Temperature = (int)Temperature_f;
+      int Humidity    = (int)Humidity_f;
+      int S           = soil_percent;
+      int R           = water_percent;
 
-    if (dbgLen > 0)
-    {
-      HAL_UART_Transmit(&huart2, (uint8_t*)debugBuf, (uint16_t)dbgLen, HAL_MAX_DELAY);
-    }
+      char debugBuf[120];
+      int dbgLen = snprintf(debugBuf, sizeof(debugBuf),
+                            "ADC: soil=%lu (%d%%), water=%lu (%d%%), "
+                            "DHT11: T=%dC H=%d%%\r\n",
+                            soil_raw, soil_percent,
+                            water_raw, water_percent,
+                            Temperature, Humidity);
+      HAL_UART_Transmit(&huart2, (uint8_t*)debugBuf, dbgLen, HAL_MAX_DELAY);
 
-    // 4) สร้าง data string แบบ project เดิม: T%dH%dS%dR%dE\r\n
-    int len = snprintf(msg, sizeof(msg), "T%dH%dS%dR%dE\r\n",
-                       Temperature, Humidity, S, R);
+      int len = snprintf(msg, sizeof(msg), "T%dH%dS%dR%dE\r\n",
+                         Temperature, Humidity, S, R);
+      HAL_UART_Transmit(&huart1, (uint8_t*)msg, len, HAL_MAX_DELAY);
+      HAL_UART_Transmit(&huart2, (uint8_t*)msg, len, HAL_MAX_DELAY);
 
-    if (len > 0)
-    {
-      // USART1
-      HAL_UART_Transmit(&huart1, (uint8_t*)msg, (uint16_t)len, HAL_MAX_DELAY);
-      //USART2 (debug)
-      HAL_UART_Transmit(&huart2, (uint8_t*)msg, (uint16_t)len, HAL_MAX_DELAY);
-    }
-
-    // 5) กระพริบ LED ให้รู้ว่ายังมีชีวิต
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-
-    // 6) หน่วงเวลา 1 วิ
-    HAL_Delay(1000);
-
+      HAL_Delay(1000);
   }
+
+
   /* USER CODE END 3 */
 }
 
@@ -445,7 +296,7 @@ static void MX_ADC1_Init(void)
     Error_Handler();
   }
 
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
+  /** Default config one channel (will be changed in ReadADC_Channel)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = 1;
@@ -534,9 +385,8 @@ static void MX_USART2_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  /* USER CODE BEGIN MX_GPIO_Init_1 */
-
-  /* USER CODE END MX_GPIO_Init_1 */
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -545,7 +395,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4|LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -553,16 +403,15 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA4 LD2_Pin */
-  GPIO_InitStruct.Pin = GPIO_PIN_4|LD2_Pin;
+  /*Configure GPIO pin : PA5 (DHT11 data if libraryใช้ขา PA5) */
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /* USER CODE BEGIN MX_GPIO_Init_2 */
-
-  /* USER CODE END MX_GPIO_Init_2 */
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -576,14 +425,14 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)
   {
   }
   /* USER CODE END Error_Handler_Debug */
 }
-#ifdef USE_FULL_ASSERT
+
+#ifdef  USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.

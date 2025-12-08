@@ -1,28 +1,10 @@
-18:40:48 **** Incremental Build of configuration Debug for project hardware ****
+15:27:35 **** Incremental Build of configuration Debug for project hardware ****
 make -j22 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:334:75: warning: format '%lu' expects argument of type 'long unsigned int', but argument 8 has type 'int' [-Wformat=]
-  334 |                           "ADC: soil=%lu (%d%%), water=%lu (%d%%), temp=%lu\r\n",
-      |                                                                         ~~^
-      |                                                                           |
-      |                                                                           long unsigned int
-      |                                                                         %u
-  335 |                           soil_raw, soil_percent, water_raw, water_percent, Temperature);
-      |                                                                             ~~~~~~~~~~~
-      |                                                                             |
-      |                                                                             int
-arm-none-eabi-gcc -o "hardware.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\embeded-final\hardware\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="hardware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: hardware.elf
- 
 arm-none-eabi-size  hardware.elf 
-arm-none-eabi-objdump -h -S hardware.elf  > "hardware.list"
    text	   data	    bss	    dec	    hex	filename
-  15044	     92	   2204	  17340	   43bc	hardware.elf
+  15268	     92	   2228	  17588	   44b4	hardware.elf
 Finished building: default.size.stdout
  
-Finished building: hardware.list
- 
 
-18:40:49 Build Finished. 0 errors, 1 warnings. (took 1s.110ms)
+15:27:35 Build Finished. 0 errors, 0 warnings. (took 197ms)
 
